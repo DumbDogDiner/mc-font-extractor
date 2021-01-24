@@ -34,7 +34,8 @@ exports.handler = async (argv) => {
         const { x2, x1 } = glyphs[g].getBoundingBox();
         xMax = x2;
         xMin = x1;
-        lenX = xMax - xMin; // subtract xMin from xMax
+        width = xMax - xMin; // subtract xMin from xMax
+        width += 2; // add 2 for padding (fontforge / space between chars)
         // Get and set (if possible) the unicode character and hex values
         let val = "";
         let unicodeHex = "";
@@ -52,7 +53,7 @@ exports.handler = async (argv) => {
           uid,
           id: glyphs[g].unicode,
           val,
-          lenX,
+          width,
         }); //, x: {xMax, xMin}});
       }
 
