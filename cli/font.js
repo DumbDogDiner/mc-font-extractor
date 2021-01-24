@@ -1,5 +1,4 @@
 const makeGlyphs = require("../api/makeGlyphs");
-const versions = require("../versions.json");
 
 const colors = require("colors/safe");
 const { writeFileSync } = require("fs");
