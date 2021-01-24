@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
+      - name: Run npm ci
+        run: npm ci
       - name: Extract character map
         run: node cli extract web/${GITHUB_REF##*/}/providers.json
       - name: Extract font file
