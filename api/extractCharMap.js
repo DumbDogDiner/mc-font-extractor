@@ -1,5 +1,6 @@
 const console = require("prefix-logger")("mc-font-extractor.extractCharMap");
 
+const { getJar } = require("./versionProvider")
 const findCharacterMap = require("./findCharacterMap")
 
 const JSZip = require("jszip");
@@ -12,7 +13,7 @@ module.exports = extractCharMap = async (version) => {
   //const jar = await fetch(versions[version].url).then((res) =>
   //  res.arrayBuffer()
   //);
-  const jar = await require("./versionProvider")(version);
+  const jar = await getJar(version);
 
   console.log("Loading jar...");
 
@@ -23,7 +24,7 @@ module.exports = extractCharMap = async (version) => {
   console.log("Finding character map...")
 
   const providers = await findCharacterMap(zip);
-  
+
   console.log("Found character map!")
 
   return { providers, zip };

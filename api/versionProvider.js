@@ -1,15 +1,25 @@
 const console = require("prefix-logger")("mc-font-extractor.versionProvider");
 
-const {gray} = require("colors/safe")
-const fetch = require("node-fetch")
+const { gray } = require("colors/safe");
+const fetch = require("node-fetch");
 
-module.exports = versionProvider = async (requestedVersion) => {
+
+const getManifest = async () => {
     const url = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
 
-    console.log(gray(`Requested version: ${requestedVersion}`))
     console.log(gray(`Using manifest URL: ${url}`));
 
     const manifest = await fetch(url).then(res => res.json());
+    
+    return manifest;
+};
+
+const getJar = async (requestedVersion) => {
+
+    console.log(gray(`Requested version: ${requestedVersion}`))
+
+    // Get the manifest
+    const manifest = await getManifest();
 
     // Get the object in the manifest corresponding to the version we are trying to download
     const versionObj = manifest.versions.find(version => version.id == requestedVersion);
@@ -36,4 +46,9 @@ module.exports = versionProvider = async (requestedVersion) => {
 
     return jar;
 
+}
+
+module.exports = {
+    getManifest,
+    getJar
 }

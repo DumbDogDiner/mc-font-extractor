@@ -1,6 +1,10 @@
-exports.command = "versions";
-exports.desc = "list supported minecraft versions";
+const { getManifest } = require("../api/versionProvider")
 
-exports.handler = async (argv) => {
-    //console.log(Object.keys(versions).join("\n"))
+exports.command = "versions";
+exports.desc = "list available minecraft versions";
+
+exports.handler = async () => {
+    const manifest = await getManifest();
+
+    console.log(manifest.versions.map(v => { return v.id }).join("\n"))
 };
