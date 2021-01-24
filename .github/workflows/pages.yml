@@ -1,0 +1,52 @@
+name: pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the docs deployment to work correctly.
+        with:
+          persist-credentials: false
+      - name: Echo branch name
+        run: echo ${GITHUB_REF##*/}
+      - name: Create output directories
+        run: mkdir -p web/${GITHUB_REF##*/}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Extract character map
+        run: node cli extract web/${GITHUB_REF##*/}/providers.json
+      - name: Extract font file
+        run: node cli font web/${GITHUB_REF##*/}/Mojangles.otf
+      - name: Extract width data
+        run: node cli width web/${GITHUB_REF##*/}/mojangles_width_data.json
+      - name: Import GPG key for docs deployment signing
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@v3.0.2
+        with:
+          gpg-private-key: ${{ secrets.DOCS_GPG_PRIV_KEY }}
+          # Set GPG signing keyID for this Git repository 
+          git-user-signingkey: true
+          # Sign all commits automatically.
+          git-commit-gpgsign: true
+      - name: Print imported GPG key details
+        run: |
+          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+          echo "name:        ${{ steps.import_gpg.outputs.name }}"
+          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+      - name: Deploy Docs
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          ACCESS_TOKEN: ${{ secrets.DOCS_GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: "web"
+          CLEAN: false # don't clean so we can also use tags
+          GIT_CONFIG_NAME: "StickyAPI Docs Deployment"
+          GIT_CONFIG_EMAIL: ${{ secrets.DOCS_GH_EMAIL }}
