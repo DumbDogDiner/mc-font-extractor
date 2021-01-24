@@ -316,8 +316,7 @@ module.exports = makeGlyphs = async (version) => {
   //create final font
   var finalFont = new opentype.Font({
     familyName: "Mojangles" + (!centerA ? " left-aligned" : ""),
-    //styleName: blob.name.split(".").slice(0, -1).join("."),
-    styleName: "1.16.5".split(".").slice(0, -1).join("."),
+    styleName: version, // use full version as style name
     unitsPerEm: 9 * commonMultiple * amplifier,
     ascender: 8 * commonMultiple * amplifier,
     descender: -1 * commonMultiple * amplifier,
