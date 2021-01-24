@@ -19,7 +19,7 @@ exports.handler = async (argv) => {
     colors.yellow(`Using Minecraft version ${colors.bold(argv.mcversion)}`)
   );
 
-  makeGlyphs(argv.mcversion)
+  makeGlyphs(argv.mcversion, argv.debug)
     .then(({ finalFont }) => {
       const outputFileName = `${argv.dest.toString()}.otf`;
       writeFileSync(outputFileName, Buffer.from(finalFont.toArrayBuffer()));

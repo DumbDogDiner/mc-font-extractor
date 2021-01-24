@@ -13,11 +13,17 @@ yargs(hideBin(process.argv))
   // Enable --help and --version
   .help()
   .version()
-  // Set --debug option
+  // Set --mcversion option
   .option("mcversion", {
     default: "1.16.5",
     type: "string",
     description: "minecraft version to use",
+  })
+  // Set --debug option
+  .option("debug", {
+    default: false,
+    type: "boolean",
+    description: "show debug output"
   })
   .alias("help", "h")
   .alias("version", "v")

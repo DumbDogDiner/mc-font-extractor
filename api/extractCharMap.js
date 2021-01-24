@@ -5,7 +5,7 @@ const findCharacterMap = require("./findCharacterMap")
 
 const JSZip = require("jszip");
 
-module.exports = extractCharMap = async (version) => {
+module.exports = extractCharMap = async (version, debug) => {
   // valid version, continue
 
   console.log("Downloading jar...");
@@ -13,7 +13,7 @@ module.exports = extractCharMap = async (version) => {
   //const jar = await fetch(versions[version].url).then((res) =>
   //  res.arrayBuffer()
   //);
-  const jar = await getJar(version);
+  const jar = await getJar(version, debug);
 
   console.log("Loading jar...");
 

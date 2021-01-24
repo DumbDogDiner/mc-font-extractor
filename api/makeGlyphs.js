@@ -5,8 +5,8 @@ const UPNG = require("upng-js");
 
 const extractCharMap = require("./extractCharMap")
 
-module.exports = makeGlyphs = async (version) => {
-  const { providers, zip } = await extractCharMap(version);
+module.exports = makeGlyphs = async (version, debug) => {
+  const { providers, zip } = await extractCharMap(version, debug);
 
   // set the amplifier
   const amplifier = 2;
@@ -300,7 +300,7 @@ module.exports = makeGlyphs = async (version) => {
           });
           //console.log("Added glyph "+String.fromCodePoint(currentcodepoint))
         } else {
-          console.log(`Skipped duplicate glyph (${currentcodepoint}): ${String.fromCodePoint(currentcodepoint)}`,
+          if (debug) console.log(`Skipped duplicate glyph (${currentcodepoint}): ${String.fromCodePoint(currentcodepoint)}`,
           );
         }
       }

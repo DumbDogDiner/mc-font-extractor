@@ -19,7 +19,7 @@ exports.handler = async (argv) => {
     colors.yellow(`Using Minecraft version ${colors.bold(argv.mcversion)}`)
   );
 
-  extractCharMap(argv.mcversion)
+  extractCharMap(argv.mcversion, argv.debug)
     .then((providers) => {
       const outputFileName = `${argv.dest.toString()}.json`;
       fs.writeFileSync(
