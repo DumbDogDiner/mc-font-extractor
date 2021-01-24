@@ -119,3 +119,8 @@ dist
 data.json
 font.otf
 data_chars.txt
+
+# CLI default output names
+mojangles_width_data.json
+Mojangles.otf
+providers.json

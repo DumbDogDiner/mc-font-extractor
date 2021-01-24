@@ -8,7 +8,7 @@ const versions = require("../versions.json");
 module.exports = extractCharMap = async (version) => {
   if (!Object.keys(versions).includes(version)) {
     console.error("invalid version");
-    return null;
+    throw Error("invalid version!");
   }
 
   // valid version, continue
