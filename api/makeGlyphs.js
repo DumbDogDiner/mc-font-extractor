@@ -3,6 +3,8 @@ const console = require("prefix-logger")("mc-font-extractor.makeGlyphs");
 const opentype = require("opentype.js");
 const UPNG = require("upng-js");
 
+const { gray } = require("colors/safe")
+
 const extractCharMap = require("./extractCharMap")
 
 module.exports = makeGlyphs = async (version, debug) => {
@@ -300,8 +302,8 @@ module.exports = makeGlyphs = async (version, debug) => {
           });
           //console.log("Added glyph "+String.fromCodePoint(currentcodepoint))
         } else {
-          if (debug) console.log(`Skipped duplicate glyph (${currentcodepoint}): ${String.fromCodePoint(currentcodepoint)}`,
-          );
+          if (debug) console.log(gray(`Skipped duplicate glyph (${currentcodepoint}): ${String.fromCodePoint(currentcodepoint)}`,
+          ));
         }
       }
     } else {
