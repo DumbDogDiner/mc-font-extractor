@@ -22,12 +22,13 @@ jobs:
           node-version: 14.x
       - name: Run npm ci
         run: npm ci
-      - name: Extract character map
-        run: node cli extract web/${GITHUB_REF##*/}/providers.json
+      # Not running for now as it is too large.
+      #- name: Extract character map
+      #  run: node cli extract web/${GITHUB_REF##*/}/providers --debug
       - name: Extract font file
-        run: node cli font web/${GITHUB_REF##*/}/Mojangles.otf
+        run: node cli font web/${GITHUB_REF##*/}/Mojangles --debug
       - name: Extract width data
-        run: node cli width web/${GITHUB_REF##*/}/mojangles_width_data.json
+        run: node cli width web/${GITHUB_REF##*/}/mojangles_width_data --debug
       - name: Import GPG key for docs deployment signing
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v3.0.2
