@@ -35,10 +35,22 @@ module.exports = findCharacterMap = async (zip) => {
         console.log(
           "Future version (1.17+) detected! Continuing with unknown support."
         );
-        }
-      return JSON.parse(
-          await zip.file("assets/minecraft/font/default.json").async("string")
+      }
+      // jcx start
+      const c = require("./extractGlyphSizes");
+      const n = new c(zip);
+      n._iterateThroughAllAvailableUnicodePages();
+
+      //return JSON.parse(
+      //    await zip.file("assets/minecraft/font/default.json").async("string")
+      //).providers;
+      const stockProviders = JSON.parse(
+        await zip.file("assets/minecraft/font/default.json").async("string")
       ).providers;
+
+      //return stockProviders.concat(n._rofl()); // all
+      //return [stockProviders[2]] // stock only
+      return (n._rofl()); // unicode only
     } else if (version == 1) {
       //pack.mcmeta exists, code page 437
       return [
