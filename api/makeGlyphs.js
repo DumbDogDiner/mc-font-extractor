@@ -45,11 +45,16 @@ module.exports = makeGlyphs = async (version, debug) => {
       var image = UPNG.decode(await zip.file(imagepath).async("arraybuffer"));
       var imagemap = new DataView(UPNG.toRGBA8(image)[0]); //get image using file path
       var ascent = providers[i].ascent;
-      var charsPerRow = providers[i].chars[0].replace(/[\udc00-\udfff]/g, "")
-        .length;
+      //var charsPerRow = providers[i].chars[0].replace(/[\udc00-\udfff]/g, "")
+      //  .length;
+      var charsPerRow = 16; //TODO: BUG
+      console.log("JCX: charsPerRowRAW: " + providers[i].chars[0]);
+      console.log("JCX: charsPerRow   : " + charsPerRow)
       var charsPerCol = providers[i].chars.length;
+      //DEBUG | console.log("JCX: charsPerCol   : " + charsPerCol);
       var height = image.height / charsPerCol;
       var width = image.width / charsPerRow;
+      console.log(`JCX: H: ${height}; W: ${width}`);
       //new scaling support code
       var heightScale = height / (providers[i].height || 8);
       var GCF = [
@@ -61,6 +66,7 @@ module.exports = makeGlyphs = async (version, debug) => {
         GCF.shift();
       }
       GCF = (commonMultiple * heightScale) / GCF[0]; //GCF is now new common multiple
+      console.log(`GCF: ${GCF}`)
       if (commonMultiple != GCF) {
         for (var j in glyphs) {
           glyphs[j].advanceWidth *= GCF / commonMultiple;
@@ -72,14 +78,27 @@ module.exports = makeGlyphs = async (version, debug) => {
         console.log("Scaling glyphs by " + GCF / commonMultiple);
         commonMultiple = GCF;
       }
+
+
+      // JCX - This section is the start of per chhar
+
       var providerscale = commonMultiple / heightScale;
       for (var j = 0; j < charsPerRow * charsPerCol; j++) {
         //j cycles through each character
         var currentRow = providers[i].chars[Math.floor(j / charsPerRow)];
+        
+        // JCX GUESS: skip invalid???
+        // if char is not 16 (char 16 ... k < 0)
         for (var k = 0, l = 0; k < j % charsPerRow; k++) {
+          console.log(`CP ${currentRow.codePointAt(k + l)} | ITEM ${k} | ${l} COL ${currentRow}`)
           if (currentRow.codePointAt(k + l) > 0xffff) l++;
+        
+        
         } //finds jth code point, not jth word
-        var currentcodepoint = currentRow.codePointAt(k + l) || 0; //sets current code point
+        //var currentcodepoint = currentRow.codePointAt(k + l) || 0; //sets current code point
+        var currentcodepoint = current
+        //console.log(currentcodepoint)
+        // !! CODE DOES NOT REACH BELOW IF
         if (!glyphs[currentcodepoint]) {
           //only add char if not already defined
           totalGlyphCount++;
